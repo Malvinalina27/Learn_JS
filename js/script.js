@@ -24,12 +24,13 @@ console.log(addExpenses.split(', '));
 console.log('Бюджет на месяц: ', budgetMonth);
 console.log('Бюджет на день: ', Math.floor(budgetDay));
 
-if (1200 <= budgetDay){
+if (1200 < budgetDay){
   console.log('У вас высокий уровень дохода');
-} else if(600 <= budgetDay < 1200){
+} else if(600 < budgetDay && budgetDay < 1199){
   console.log('У вас средний уровень дохода');
-} else if(0 <= budgetDay < 600){
+} else if(0 <= budgetDay && budgetDay< 599){
   console.log('К сожалению, у вас уровень дохода ниже среднего');
 } else if(budgetDay < 0){
+  
   console.log('Что-то пошло не так');
 }
