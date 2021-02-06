@@ -11,7 +11,7 @@ let expenses2 = prompt('Введите обязательную статью р�
 let amount2 = +prompt('Во сколько это обойдется?', 5000);
 let budgetMonth = money - amount1 - amount2;
 let budgetDay = budgetMonth / 30;
-let period = Math.ceil(mission / budgetMonth);
+let period = Math.ceil(mission / budgetMonth > 0 );
 
 console.log(typeof money);
 console.log(typeof income);
@@ -30,7 +30,6 @@ if (1200 < budgetDay){
   console.log('У вас средний уровень дохода');
 } else if(0 <= budgetDay && budgetDay< 599){
   console.log('К сожалению, у вас уровень дохода ниже среднего');
-} else if(budgetDay < 0){
-  
+} else if(budgetDay < 0){  
   console.log('Что-то пошло не так');
 }
