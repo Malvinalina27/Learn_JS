@@ -26,7 +26,7 @@ let getExpensesMonth = function() {
 };
 console.log('Расходы за месяц: ', getExpensesMonth());
 
-console.log(addExpenses.split(', ')); 
+console.log(addExpenses.toLowerCase().split(', ')); 
 
 // накопления за месяц
 let getAccumulatedMonth = function() {
