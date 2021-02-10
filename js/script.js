@@ -34,52 +34,45 @@ let appData = {
               appData.expenses[question] = cash;          
           }
     },
+    getBudget: function() {
+      appData.budgetMonth = appData.budget - appData.expensesMonth;
+      appData.budgetDay = Math.floor(appData.budgetMonth / 30);
+    },
+    // период накоплений
+    getTargetMonth: function() {
+      if (appData.budgetMonth > 0) {
+       return ('Цель будет достигнута через ' + Math.ceil(appData.mission / appData.budgetMonth ) + ' месяцев');
+      } else if (appData.budgetMonth < 0) {
+        return ('Цель не будет достигнута');
+      }
+    },
+    getStatusIncome: function() {
+      if (1200 < appData.budgetDay){
+        return ('У вас высокий уровень дохода');
+      } else if(600 < appData.budgetDay && appData.budgetDay < 1199){
+        return ('У вас средний уровень дохода');
+      } else if(0 <= appData.budgetDay && appData.budgetDay< 599){
+        return ('К сожалению, у вас уровень дохода ниже среднего');
+      } else if(appData.budgetDay < 0){  
+        return ('Что-то пошло не так');
+      }
+    },
+    
     budget: money,
     budgetDay: 0,
     budgetMonth: 0,
     expensesMonth: 0,
-};
-appData.asking();
+    
+  };
+  appData.asking();
+  appData.getBudget();
+  appData.getTargetMonth();
+  appData.getStatusIncome();
 
 // расходы за месяц
 for (let key in appData.expenses) {
   appData.expensesMonth += appData.expenses[key];
 }
-
-
-
-appData.getBudget = function() {
-  appData.budgetMonth = appData.budget - appData.expensesMonth;
-  appData.budgetDay = appData.budgetMonth / 30;
-};
-appData.getBudget();
-
- 
-// период накоплений
-appData.getTargetMonth = function() {
-  if (appData.budgetMonth > 0) {
-    return ('Цель будет достигнута через ' + Math.ceil(appData.mission / appData.budgetMonth ) + ' месяцев');
-  } else if (appData.budgetMonth < 0) {
-    return ('Цель не будет достигнута');
-  }
-};
-
-
-
-
-// уровень дохода
-appData.getStatusIncome = function() {
-  if (1200 < appData.budgetDay){
-    return ('У вас высокий уровень дохода');
-  } else if(600 < appData.budgetDay && appData.budgetDay < 1199){
-    return ('У вас средний уровень дохода');
-  } else if(0 <= appData.budgetDay && appData.budgetDay< 599){
-    return ('К сожалению, у вас уровень дохода ниже среднего');
-  } else if(appData.budgetDay < 0){  
-    return ('Что-то пошло не так');
-  }
-};
-
 
 console.log('Расходы за месяц: ', appData.expensesMonth); 
 console.log(appData.getTargetMonth()); 
