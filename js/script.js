@@ -117,6 +117,7 @@ appData.calcSavedMoney();
 // расходы за месяц
 
 
+console.log('Возможные расходы: ', appData.addExpenses); 
 console.log('Расходы за месяц: ', appData.expensesMonth); 
 console.log(appData.getTargetMonth()); 
 console.log(appData.getStatusIncome()); 
