@@ -29,7 +29,7 @@ let appData = {
     expensesMonth: 0,
     asking: function() {
 
-      if(confirm('Есть ли у вас дополнительный источник заработка?')) {
+   if(confirm('Есть ли у вас дополнительный источник заработка?')) {
         let itemIncome = prompt('Какой у вас дополнительный заработок?', 'Таксую');
         while (isNumber(itemIncome)) {
           itemIncome = prompt('Какой у вас дополнительный заработок?', 'Таксую');
@@ -47,7 +47,7 @@ let appData = {
       while (isNumber(addExpenses)) {
         addExpenses = prompt('Перечислите возможные расходы за рассчитываемый период через запятую');
       } 
-      appData.addExpenses = addExpenses.split(/\s+/).map(word => word[0].toUpperCase() + word.substring(1)).join(' ');
+      appData.addExpenses = addExpenses.split(/\s*,\s*/).map(word => word[0].toUpperCase() + word.substring(1)).join(', ');
       appData.deposit = confirm ('Есть ли у вас депозит в банке?');      
       for (let i = 0; i < 2; i++) {
           let question = prompt('Введите обязательную статью расходов?');
@@ -124,6 +124,5 @@ console.log(appData.getStatusIncome());
 
 for (let key in appData) {
   console.log('Наша программа включает в себя данные: ' + key + ' ' + appData[key]);
-}
+} 
 
-console.log(appData.percentDeposit, appData.moneyDeposit, appData.calcSavedMoney()); 
