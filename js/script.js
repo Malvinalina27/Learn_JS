@@ -180,6 +180,7 @@ let appData = {
     },
     calcSavedMoney: function() {
       return appData.budgetMonth * periodSelect.value;
+    
     },
     //ползунок
     getPeriod: function(event) {
@@ -191,7 +192,9 @@ let appData = {
 Start.addEventListener('click', appData.start, false);
 incomePlus.addEventListener('click', appData.addIncomeBlock);
 expensesPlus.addEventListener('click', appData.addExpensesBlock);
-periodSelect.addEventListener('change', appData.getPeriod);
+periodSelect.addEventListener('change', function() {
+  incomePeriodValue.value = appData.calcSavedMoney();});
+
 
 /* for (let key in appData) {
   console.log('Наша программа включает в себя данные: ' + key + ' ' + appData[key]);
