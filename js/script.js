@@ -48,7 +48,7 @@ let appData = {
     incomeMonth: 0,
     moneyDeposit: 0,
     percentDeposit: 0,
-    start: function(event) {
+    start: function (event) {
      if(salaryAmount.value === '') {
         event.preventDefault();
         alert('не заполнен месячный доход');
@@ -176,16 +176,17 @@ let appData = {
     
     },
     //ползунок
-    getPeriod: function(event) {
+   /*  getPeriod: function(event) {
       periodAmount.innerHTML = event.target.value;
     },
-    
+     */
     
 };
 Start.addEventListener('click', appData.start, false);
 incomePlus.addEventListener('click', appData.addIncomeBlock);
 expensesPlus.addEventListener('click', appData.addExpensesBlock);
-periodSelect.addEventListener('input', function() {
+periodSelect.addEventListener('change', function(e) {
+  periodAmount.innerHTML = e.target.value;
   incomePeriodValue.value = appData.calcSavedMoney();
 });
 
