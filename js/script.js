@@ -74,7 +74,6 @@ let appData = {
       incomePeriodValue.value = appData.calcSavedMoney(); //накопления за период
       targetMonthValue.value = Math.ceil(appData.getTargetMonth()); // срок достижения цели в мес
 
-      //periodAmount.value = appData.calcSavedMoney();
     },
     //дополнительный доход +
     addIncomeBlock: function(){
@@ -148,11 +147,6 @@ let appData = {
     },
     // период накоплений
     getTargetMonth: function() {
-    /*   if (appData.budgetMonth > 0) {
-       return ('Цель будет достигнута через ' + (targetAmount.value / appData.budgetMonth)  + ' месяцев');
-      } else if (appData.budgetMonth < 0) {
-        return ('Цель не будет достигнута');
-      } */
       return targetAmount.value / appData.budgetMonth;
     },
     getStatusIncome: function() {
