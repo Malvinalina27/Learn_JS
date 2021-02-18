@@ -17,7 +17,6 @@ let budgetMonthValue = document.getElementsByClassName('budget_month-value')[0],
 
 let salaryAmount = document.querySelector('.salary-amount'),
     incomeTitle = document.querySelector('.income-title'),
-    //incomeAmount = document.querySelector('.income-amount'),
     expensesTitle = document.querySelector('.expenses-title'),
     expensesItems = document.querySelectorAll('.expenses-items'),
     additionalExpensesItem = document.querySelector('.additional_expenses-item'),
@@ -66,13 +65,13 @@ let appData = {
       appData.showResult();
     },
     showResult: function() {
-      budgetMonthValue.value = appData.budgetMonth; // доход за месяц
-      budgetDayValue.value = Math.ceil(appData.budgetDay); //дневной бюджет
-      expensesMonthValue.value = appData.expensesMonth; //расход за месяц
-      additionalIncomeValue.value = appData.addIncome.join(', '); //возможные доходы
-      additionalExpensesValue.value = appData.addExpenses.join(', '); //возможные расходы 
-      incomePeriodValue.value = appData.calcSavedMoney(); //накопления за период
-      targetMonthValue.value = Math.ceil(appData.getTargetMonth()); // срок достижения цели в мес
+      budgetMonthValue.value = this.budgetMonth; // доход за месяц
+      budgetDayValue.value = Math.ceil(this.budgetDay); //дневной бюджет
+      expensesMonthValue.value = this.expensesMonth; //расход за месяц
+      additionalIncomeValue.value = this.addIncome.join(', '); //возможные доходы
+      additionalExpensesValue.value = this.addExpenses.join(', '); //возможные расходы 
+      incomePeriodValue.value = this.calcSavedMoney(); //накопления за период
+      targetMonthValue.value = Math.ceil(this.getTargetMonth()); // срок достижения цели в мес
 
     },
     //дополнительный доход +
@@ -115,8 +114,8 @@ let appData = {
         }
       });
 
-      for(let key in appData.income) {
-        appData.incomeMonth += +appData.income[key];
+      for(let key in this.income) {
+        this.incomeMonth += +this.income[key];
       }
     },
     getAddExpenses: function() {
@@ -137,17 +136,17 @@ let appData = {
       });
     },
     getExpensesMonth: function () {
-      for (let key in appData.expenses) {
-        appData.expensesMonth += +appData.expenses[key];
+      for (let key in this.expenses) {
+        this.expensesMonth += +this.expenses[key];
       }
     },
     getBudget: function() {
-      appData.budgetMonth = appData.budget + appData.incomeMonth - appData.expensesMonth;
-      appData.budgetDay = appData.budgetMonth / 30;
+      appData.budgetMonth = this.budget + this.incomeMonth - this.expensesMonth;
+      appData.budgetDay = this.budgetMonth / 30;
     },
     // период накоплений
     getTargetMonth: function() {
-      return targetAmount.value / appData.budgetMonth;
+      return targetAmount.value / this.budgetMonth;
     },
     getStatusIncome: function() {
       if (1200 < appData.budgetDay){
@@ -162,18 +161,18 @@ let appData = {
     },
     
     getInfoDeposit: function(){      
-      if(appData.deposit){
+      if(this.deposit){
         do {
           appData.percentDeposit = prompt('Какой годовой процент?', '10');
-        } while (!isNumber(appData.percentDeposit));
+        } while (!isNumber(this.percentDeposit));
 
         do {
           appData.moneyDeposit = prompt('Какая сумма заложена?', 10000);
-        } while (!isNumber(appData.moneyDeposit));
+        } while (!isNumber(this.moneyDeposit));
       }
     },
     calcSavedMoney: function() {
-      return appData.budgetMonth * periodSelect.value;
+      return this.budgetMonth * periodSelect.value;
     
     },
     //ползунок
@@ -186,8 +185,9 @@ let appData = {
 Start.addEventListener('click', appData.start, false);
 incomePlus.addEventListener('click', appData.addIncomeBlock);
 expensesPlus.addEventListener('click', appData.addExpensesBlock);
-periodSelect.addEventListener('change', function() {
-  incomePeriodValue.value = appData.calcSavedMoney();});
+periodSelect.addEventListener('input', function() {
+  incomePeriodValue.value = appData.calcSavedMoney();
+});
 
 
 /* for (let key in appData) {
