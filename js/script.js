@@ -57,12 +57,12 @@ let appData = {
 
       let dataInput = document.querySelectorAll('.data input[type = text]');
       dataInput.forEach(function(item){
-        item.setAttribute('disabled', 'disabled');
+        item.setAttribute('disabled', true);
       });
-      incomePlus.setAttribute('disabled', 'disabled');
-      expensesPlus.setAttribute('disabled', 'disabled');
-      Start.style.display = 'block';
-      Cancel.style.display = 'none';
+      incomePlus.setAttribute('disabled', true);
+      expensesPlus.setAttribute('disabled', true);
+      Cancel.style.display = 'block';
+      Start.style.display = 'none';
       
       appData.budget = +salaryAmount.value;      
       appData.getExpenses();
@@ -75,17 +75,23 @@ let appData = {
       appData.showResult();
     },
     reset: function() {
-      let dataInput = document.querySelectorAll('.data input[type = text]');
-      dataInput.forEach(function(item, el){
+      let dataInput = document.querySelectorAll('.data input[type = text]');      
+      dataInput.forEach(function(item){
         item.removeAttribute('disabled');
-        el.value = '';
+        item.value = '';
       });
+      let resultInput = document.querySelectorAll('.result input[type = text]');
+      resultInput.forEach(function(item){
+        item.value = '';
+      }); 
       incomePlus.removeAttribute('disabled');
       expensesPlus.removeAttribute('disabled');
       periodSelect.value = 1;
+      periodAmount.innerHTML = 1;
 
-      Cancel.style.display = 'block';
-      Start.style.display = 'none';
+
+      Cancel.style.display = 'none';
+      Start.style.display = 'block';
 
     },
     showResult: function() {
