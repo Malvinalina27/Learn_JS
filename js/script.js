@@ -112,9 +112,9 @@ AppData.prototype.reset = function() {
 
 };
 AppData.prototype.showResult = function() {
-  budgetMonthValue.value = this.budgetMonth; // доход за месяц
+  budgetMonthValue.value = +this.budgetMonth; // доход за месяц
   budgetDayValue.value = Math.ceil(this.budgetDay); //дневной бюджет
-  expensesMonthValue.value = this.expensesMonth; //расход за месяц
+  expensesMonthValue.value = +this.expensesMonth; //расход за месяц
   additionalIncomeValue.value = this.addIncome.join(', '); //возможные доходы
   additionalExpensesValue.value = this.addExpenses.join(', '); //возможные расходы 
   incomePeriodValue.value = this.calcSavedMoney(); //накопления за период
