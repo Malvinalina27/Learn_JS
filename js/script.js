@@ -15,25 +15,21 @@ DomElement.prototype.addElem = function() {
   } else if (this.selector[0] === '#') {
     document.body.insertAdjacentHTML('beforeend', `<p id="${this.selector.slice(1)}">Это параграф</p>`);  
   }
+
+  for (let elem of document.body.children) {
+    if(elem.matches(this.selector)) {
+      elem.style.cssText = `
+      height: ${this.height};
+      width: ${this.width};
+      background-color: ${this.bg};
+      font-size: ${this.fontSize};`;
+    } 
+  }  
 };
 
-let myObj1 = new DomElement('.block', '150px', '200px', 'green', '20px');
+let myObj1 = new DomElement('.block', '150px', '200px', 'green', '25px');
 myObj1.addElem();
-
-let myBlock = document.querySelector('.block');
-myBlock.style.cssText = `
-height: ${myObj1.height};
-width: ${myObj1.width};
-background-color: ${myObj1.bg};
-font-size: ${myObj1.fontSize};`;
-
-let myObj2 = new DomElement('#best', '200px', '250px', 'yellow', '20px');
+let myObj2 = new DomElement('#best', '200px', '250px', 'yellow', '30px');
 myObj2.addElem();
 
-let myPar = document.querySelector('#best');
-myPar.style.cssText = `
-height: ${myObj2.height};
-width: ${myObj2.width};
-background-color: ${myObj2.bg};
-font-size: ${myObj2.fontSize};`;
 
