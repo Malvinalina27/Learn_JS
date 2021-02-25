@@ -106,6 +106,10 @@ class AppData {
 
     cancel.style.display = 'none';
     start.style.display = 'block';
+
+    depositBank.style.display = 'none';
+    depositAmount.style.display = 'none';
+    depositPercent.style.display = 'none';
   }
   showResult() {
     budgetMonthValue.value = this.budgetMonth; // доход за месяц
@@ -188,7 +192,7 @@ class AppData {
   getTargetMonth() {
     return targetAmount.value / this.budgetMonth;
   }
-  getStatusIncome() {
+  /* getStatusIncome() {
     if (1200 < this.budgetDay) {
       return ('У вас высокий уровень дохода');
     } else if (600 < this.budgetDay && this.budgetDay < 1199) {
@@ -198,7 +202,7 @@ class AppData {
     } else if (this.budgetDay < 0) {
       return ('Что-то пошло не так');
     }
-  }
+  } */
   calcSavedMoney() {
     return this.budgetMonth * periodSelect.value;
   }
