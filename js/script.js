@@ -4,10 +4,9 @@ window.addEventListener('DOMContentLoaded', () => {
   const today = document.querySelector('.today');
   const now = document.querySelector('.now');
   const newYear = document.querySelector('.new-year');
-  const dateNow = new Date();
-
 
   function countTimer() {
+    const dateNow = new Date();
     // 1 строка
     function time() {
       const hello = ['Доброе утро!', 'Добрый день!', 'Добрый вечер!', 'Доброй ночи!'];
@@ -39,10 +38,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
     //3 строка
     const getNowTime = dateNow.toLocaleTimeString('en');
-    now.innerHTML = 'Текущее время: ' + getNowTime;
+    now.innerHTML = `Текущее время: ${getNowTime}`;
 
     // 4 строка
-    const  dateStop = new Date('01 January 2022 00:00').getTime(),
+    const  dateStop = new Date('01 January 2022').getTime(),
       timeRemaining = (dateStop - dateNow.getTime()) / 1000,
       day = Math.floor(timeRemaining / 60 / 60 / 24);
 
