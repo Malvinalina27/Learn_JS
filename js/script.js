@@ -24,7 +24,7 @@ window.addEventListener('DOMContentLoaded', () => {
         timerHours.textContent = '00';
         timerMinutes.textContent = '00';
         timerSeconds.textContent = '00';
-        clearInterval(updateClock);
+        clearInterval(1);
       } else {
         timerHours.textContent = timer.hours;
         if (timer.hours < 10) timerHours.textContent = '0' + timer.hours;
@@ -42,6 +42,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
   }
 
-  countTimer('27 February 2021 15:00');
+  countTimer('28 February 2021 15:00');
 
 });
