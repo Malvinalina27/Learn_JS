@@ -66,11 +66,13 @@ window.addEventListener('DOMContentLoaded', () => {
         day = Math.floor(timeRemaining / 60 / 60 / 24);
       newYear.innerHTML = `До нового года осталось ${day} дней`;
 
-      setTimeout(countNY, 1000);
+      if (timeRemaining < 0) {
+        newYear.innerHTML = 'С Новым годом!';
+      }
     }
     countNY();
-    //setInterval(countNY, 1000);
   }
   countTimer();
+  setInterval(countTimer, 1000);
 
 });
