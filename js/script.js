@@ -42,6 +42,46 @@ window.addEventListener('DOMContentLoaded', () => {
 
   }
 
-  countTimer('28 February 2021 15:00');
+  countTimer('28 March 2021 15:00');
+
+  // Menu
+
+  const toggleMenu = () => {
+
+    const btnMenu = document.querySelector('.menu'); // кнопка .menu
+    const menu = document.querySelector('menu'); // само меню
+    const closeBtn = document.querySelector('.close-btn');
+    const menuItems = menu.querySelectorAll('ul>li');
+
+    const handlerMenu = () => {
+      menu.classList.toggle('active-menu');
+    };
+
+    btnMenu.addEventListener('click', handlerMenu);
+    closeBtn.addEventListener('click', handlerMenu);
+    menuItems.forEach(elem => elem.addEventListener('click', handlerMenu));
+  };
+
+  toggleMenu();
+
+  //popup
+
+  const togglePopUp = () => {
+    const popup = document.querySelector('.popup');
+    const popupBtn = document.querySelectorAll('.popup-btn');
+    const popupClose = document.querySelector('.popup-close');
+
+    popupBtn.forEach(elem => {
+      elem.addEventListener('click', () => {
+        popup.style.display = 'block';
+      });
+    });
+
+    popupClose.addEventListener('click', () => {
+      popup.style.display = 'none';
+    });
+  };
+
+  togglePopUp();
 
 });
