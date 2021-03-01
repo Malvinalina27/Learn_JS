@@ -45,17 +45,49 @@ window.addEventListener('DOMContentLoaded', () => {
   countTimer('28 March 2021 15:00');
 
   // Menu
-
   const toggleMenu = () => {
 
     const btnMenu = document.querySelector('.menu'); // кнопка .menu
     const menu = document.querySelector('menu'); // само меню
     const closeBtn = document.querySelector('.close-btn');
     const menuItems = menu.querySelectorAll('ul>li');
+    const width = document.documentElement.clientWidth; //ширина экрана
 
+    const count = 0;
     const handlerMenu = () => {
       menu.classList.toggle('active-menu');
+      if (count > width) {
+        requestAnimationFrame(animate({
+          duration: 2000,
+          timing(timeFraction) {
+            return timeFraction;
+          },
+          draw(progress) {
+            menu.style.width = progress * 100 + '%';
+          }
+        })
+        );
+      } else if (width < 768) {
+        cancelAnimationFrame(animate);
+      }
     };
+
+
+
+    function animate({ timing, draw, duration }) {
+      const start = performance.now();
+      requestAnimationFrame(function animate(time) {
+        // timeFraction изменяется от 0 до 1
+        let timeFraction = (time - start) / duration;
+        if (timeFraction > 1) timeFraction = 1;
+        // вычисление текущего состояния анимации
+        const progress = timing(timeFraction);
+        draw(progress); // отрисовать её
+        if (timeFraction < 1) {
+          requestAnimationFrame(animate);
+        }
+      });
+    }
 
     btnMenu.addEventListener('click', handlerMenu);
     closeBtn.addEventListener('click', handlerMenu);
@@ -65,7 +97,6 @@ window.addEventListener('DOMContentLoaded', () => {
   toggleMenu();
 
   //popup
-
   const togglePopUp = () => {
     const popup = document.querySelector('.popup');
     const popupBtn = document.querySelectorAll('.popup-btn');
