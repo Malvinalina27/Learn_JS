@@ -51,27 +51,50 @@ window.addEventListener('DOMContentLoaded', () => {
     const menu = document.querySelector('menu'); // само меню
     const closeBtn = document.querySelector('.close-btn');
     const menuItems = menu.querySelectorAll('ul>li');
-    const width = document.documentElement.clientWidth; //ширина экрана
 
-    const count = 0;
     const handlerMenu = () => {
       menu.classList.toggle('active-menu');
-      if (count > width) {
-        requestAnimationFrame(animate({
-          duration: 2000,
-          timing(timeFraction) {
-            return timeFraction;
-          },
-          draw(progress) {
-            menu.style.width = progress * 100 + '%';
-          }
-        })
-        );
-      } else if (width < 768) {
-        cancelAnimationFrame(animate);
-      }
     };
 
+
+    btnMenu.addEventListener('click', handlerMenu);
+    closeBtn.addEventListener('click', handlerMenu);
+    menuItems.forEach(elem => elem.addEventListener('click', handlerMenu));
+  };
+
+  toggleMenu();
+
+  //popup
+  const togglePopUp = () => {
+    const popup = document.querySelector('.popup');
+    const popupBtn = document.querySelectorAll('.popup-btn');
+    const popupClose = document.querySelector('.popup-close');
+    const width = document.documentElement.clientWidth; //ширина экрана
+
+
+    popupBtn.forEach(elem => {
+      elem.addEventListener('click', () => {
+        popup.style.display = 'block';
+        if (width < 768) {
+          cancelAnimationFrame(animate);
+        } else {
+          requestAnimationFrame(animate({
+            duration: 600,
+            timing(timeFraction) {
+              return timeFraction;
+            },
+            draw(progress) {
+              popup.style.width = progress * 100 + '%';
+            }
+          })
+          );
+        }
+      });
+    });
+
+    popupClose.addEventListener('click', () => {
+      popup.style.display = 'none';
+    });
 
 
     function animate({ timing, draw, duration }) {
@@ -88,29 +111,6 @@ window.addEventListener('DOMContentLoaded', () => {
         }
       });
     }
-
-    btnMenu.addEventListener('click', handlerMenu);
-    closeBtn.addEventListener('click', handlerMenu);
-    menuItems.forEach(elem => elem.addEventListener('click', handlerMenu));
-  };
-
-  toggleMenu();
-
-  //popup
-  const togglePopUp = () => {
-    const popup = document.querySelector('.popup');
-    const popupBtn = document.querySelectorAll('.popup-btn');
-    const popupClose = document.querySelector('.popup-close');
-
-    popupBtn.forEach(elem => {
-      elem.addEventListener('click', () => {
-        popup.style.display = 'block';
-      });
-    });
-
-    popupClose.addEventListener('click', () => {
-      popup.style.display = 'none';
-    });
   };
 
   togglePopUp();
