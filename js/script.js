@@ -73,39 +73,39 @@ window.addEventListener('DOMContentLoaded', () => {
     const popupContent = document.querySelector('.popup-content');
 
 
-
-    function animate({ timing, draw, duration }) {
+    function animate({ duration, timing, draw }) {
       const start = performance.now();
+
       requestAnimationFrame(function animate(time) {
         let timeFraction = (time - start) / duration;
+
         if (timeFraction > 1) timeFraction = 1;
 
         const progress = timing(timeFraction);
 
         draw(progress);
+
         if (timeFraction < 1) {
-          return requestAnimationFrame(animate);
+          requestAnimationFrame(animate);
         }
       });
     }
 
-    animate({
-      duration: 1000,
-      timing(timeFraction) {
-        return timeFraction;
-      },
-      draw(progress) {
-        popupContent.style.left = progress + 'px';
-      },
-    });
-
-
     popupBtn.forEach(elem => {
       elem.addEventListener('click', () => {
         popup.style.display = 'block';
-        requestAnimationFrame(animate);
         if (width < 768) {
           cancelAnimationFrame(animate);
+        } else {
+          animate({
+            duration: 1000,
+            timing(timeFraction) {
+              return timeFraction;
+            },
+            draw(progress) {
+              popupContent.style.left = progress * (width / 2.5) + 'px';
+            },
+          });
         }
       });
     });
