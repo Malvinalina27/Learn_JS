@@ -49,18 +49,35 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const btnMenu = document.querySelector('.menu'); // кнопка .menu
     const menu = document.querySelector('menu'); // само меню
-    const closeBtn = document.querySelector('.close-btn');
-    const menuItems = menu.querySelectorAll('ul>li');
-    //const width = document.documentElement.clientWidth; //ширина экрана
 
-    //const count = 0;
     const handlerMenu = () => {
       menu.classList.toggle('active-menu');
     };
 
-    btnMenu.addEventListener('click', handlerMenu);
-    closeBtn.addEventListener('click', handlerMenu);
-    menuItems.forEach(elem => elem.addEventListener('click', handlerMenu));
+    // btnMenu
+    btnMenu.addEventListener('click', event => {
+      let target = event.target;
+      target = target.closest('.menu');
+
+      if (target) {
+        handlerMenu();
+      }
+    });
+
+    // closeBtn & menuItems
+    menu.addEventListener('click', event => {
+      let target = event.target;
+
+      if (target.classList.contains('close-btn')) {
+        handlerMenu();
+      } else {
+        target = target.closest('li>a');
+        if (target) {
+          handlerMenu();
+        }
+      }
+    });
+
   };
 
   toggleMenu();
