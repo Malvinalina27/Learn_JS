@@ -70,24 +70,42 @@ window.addEventListener('DOMContentLoaded', () => {
     const popupBtn = document.querySelectorAll('.popup-btn');
     const popupClose = document.querySelector('.popup-close');
     const width = document.documentElement.clientWidth; //ширина экрана
+    const popupContent = document.querySelector('.popup-content');
+
+
+
+    function animate({ timing, draw, duration }) {
+      const start = performance.now();
+      requestAnimationFrame(function animate(time) {
+        let timeFraction = (time - start) / duration;
+        if (timeFraction > 1) timeFraction = 1;
+
+        const progress = timing(timeFraction);
+
+        draw(progress);
+        if (timeFraction < 1) {
+          return requestAnimationFrame(animate);
+        }
+      });
+    }
+
+    animate({
+      duration: 1000,
+      timing(timeFraction) {
+        return timeFraction;
+      },
+      draw(progress) {
+        popupContent.style.left = progress + 'px';
+      },
+    });
 
 
     popupBtn.forEach(elem => {
       elem.addEventListener('click', () => {
         popup.style.display = 'block';
+        requestAnimationFrame(animate);
         if (width < 768) {
           cancelAnimationFrame(animate);
-        } else {
-          requestAnimationFrame(animate({
-            duration: 600,
-            timing(timeFraction) {
-              return timeFraction;
-            },
-            draw(progress) {
-              popup.style.width = progress * 100 + '%';
-            }
-          })
-          );
         }
       });
     });
@@ -96,21 +114,6 @@ window.addEventListener('DOMContentLoaded', () => {
       popup.style.display = 'none';
     });
 
-
-    function animate({ timing, draw, duration }) {
-      const start = performance.now();
-      requestAnimationFrame(function animate(time) {
-        // timeFraction изменяется от 0 до 1
-        let timeFraction = (time - start) / duration;
-        if (timeFraction > 1) timeFraction = 1;
-        // вычисление текущего состояния анимации
-        const progress = timing(timeFraction);
-        draw(progress); // отрисовать её
-        if (timeFraction < 1) {
-          requestAnimationFrame(animate);
-        }
-      });
-    }
   };
 
   togglePopUp();
