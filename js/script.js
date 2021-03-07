@@ -238,6 +238,7 @@ window.addEventListener('DOMContentLoaded', () => {
     slider.addEventListener('click', event => {
       event.preventDefault();
 
+      // eslint-disable-next-line prefer-const
       let target = event.target;
 
       if (!target.matches('.portfolio-btn, .dot')) {
@@ -289,5 +290,56 @@ window.addEventListener('DOMContentLoaded', () => {
 
   };
   slider();
+
+  //calc +
+  const calc = () => {
+    const calcItem = document.querySelectorAll(['.calc-square', '.calc-count', '.calc-day']);
+
+    calcItem.forEach(elem => {
+      elem.addEventListener('blur', () => {
+        elem.value = elem.value.replace(/\D/g, '');
+      });
+    });
+
+  };
+  calc();
+
+
+  // command !
+  const ourCommand = () => {
+    //const command = document.querySelector('.command');
+    const commandPhoto = document.querySelectorAll('.command__photo');
+
+    commandPhoto.forEach((e, i) => {
+
+      commandPhoto[i].addEventListener('mouseover', event => {
+        event.target.src = event.target.dataset.img;
+      });
+
+    /*   commandPhoto[i].addEventListener('mouseout', event => {
+        console.log(event.target);
+      }); */
+    });
+
+  };
+  ourCommand();
+
+  //form
+  const form = () => {
+    const formName = document.querySelectorAll('.form-name');
+    const formName2 = document.getElementById('form2-name');
+    const formEmail = document.querySelectorAll('.form-email');
+    const formPhone = document.querySelectorAll('.form-phone');
+    const mess = document.querySelectorAll('.mess');
+
+    formPhone.forEach(elem => {
+      elem.addEventListener('blur', () => {
+        elem.value = elem.value.replace(/\D/g, '');
+      });
+    });
+
+
+  };
+  form();
 
 });
