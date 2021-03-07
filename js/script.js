@@ -292,8 +292,16 @@ window.addEventListener('DOMContentLoaded', () => {
   slider();
 
   //calc +
-  const calc = () => {
+  const calc = (price = 100) => {
     const calcItem = document.querySelectorAll(['.calc-square', '.calc-count', '.calc-day']);
+
+    const calcBlock = document.querySelector('.calc-block');
+    const calcType = document.querySelector('.calc-type');
+    const calcSquare = document.querySelector('.calc-square');
+    const calcCount = document.querySelector('.calc-count');
+    const calcDay = document.querySelector('.calc-day');
+    const totalValue = document.getElementById('total');
+
 
     calcItem.forEach(elem => {
       elem.addEventListener('blur', () => {
@@ -301,8 +309,50 @@ window.addEventListener('DOMContentLoaded', () => {
       });
     });
 
+
+    calcBlock.addEventListener('change', event => {
+      const target = event.target;
+
+      const countSum = () => {
+        let total = 0;
+        let countValue = 1;
+        let dayValue = 1;
+        const typeValue = calcType.options[calcType.selectedIndex].value;
+        const squareValue = +calcSquare.value;
+
+        if (calcCount.value > 1) {
+          countValue += (calcCount.value - 1) / 10;
+        }
+
+        if (calcDay.value && calcDay.value < 5) {
+          dayValue *= 2;
+        } else if (calcDay.value && calcDay.value < 10) {
+          dayValue *= 1.5;
+        }
+
+        if (typeValue && squareValue) {
+          total = price * typeValue * squareValue * countValue * dayValue;
+        }
+
+        totalValue.textContent = total;
+      };
+
+      /* if (target.matches('.calc-type') || target.matches('.calc-square') ||
+      target.matches('.calc-count') || target.matches('.calc-day')) {
+        console.log('1');
+      } или */
+
+      /* if (target === calcType || target === calcSquare ||
+        target === calcCount || target === calcDay) {
+        console.log('1');
+      } или */
+
+      if (target.matches('select') || target.matches('input')) {
+        countSum();
+      }
+    });
   };
-  calc();
+  calc(100);
 
 
   // command !
@@ -326,11 +376,11 @@ window.addEventListener('DOMContentLoaded', () => {
 
   //form
   const form = () => {
-    const formName = document.querySelectorAll('.form-name');
-    const formName2 = document.getElementById('form2-name');
-    const formEmail = document.querySelectorAll('.form-email');
+    //const formName = document.querySelectorAll('.form-name');
+    //const formName2 = document.getElementById('form2-name');
+    //const formEmail = document.querySelectorAll('.form-email');
     const formPhone = document.querySelectorAll('.form-phone');
-    const mess = document.querySelectorAll('.mess');
+    //const mess = document.querySelectorAll('.mess');
 
     formPhone.forEach(elem => {
       elem.addEventListener('blur', () => {
