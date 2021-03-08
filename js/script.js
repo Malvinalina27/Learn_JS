@@ -326,18 +326,36 @@ window.addEventListener('DOMContentLoaded', () => {
 
   //form
   const form = () => {
-    const formName = document.querySelectorAll('.form-name');
-    const formName2 = document.getElementById('form2-name');
+    const formName = document.querySelectorAll(['.form-name', '#form2-name']);
     const formEmail = document.querySelectorAll('.form-email');
     const formPhone = document.querySelectorAll('.form-phone');
     const mess = document.querySelectorAll('.mess');
 
+    formName.forEach(elem => {
+      elem.addEventListener('blur', () => {
+        elem.value = elem.value.replace(/[^а-яА-яёЁ\s]/g, '').replace(/\s+/g, ' ').replace(/^\D/g, match =>
+          match.toUpperCase()).replace(/\D+$/g, match => match.toLowerCase());
+      });
+    });
+    //+
+    formEmail.forEach(elem => {
+      elem.addEventListener('blur', () => {
+        elem.value = elem.value.replace(/[^@-_.!~*'A-Za-z]/g, '').replace(/\s+/g, '');
+      });
+    });
+    //+
     formPhone.forEach(elem => {
       elem.addEventListener('blur', () => {
-        elem.value = elem.value.replace(/\D/g, '');
+        elem.value = elem.value.replace(/[^0-9-+()]/g, '').replace(/\s+/g, '').replace(/(\d{1})?(\d{3})(\d{3})(\d{4})/,
+          "$1($2)$3-$4");
       });
     });
 
+    mess.forEach(elem => {
+      elem.addEventListener('blur', () => {
+        elem.value = elem.value.replace(/[^а-яА-яёЁ\s]/g, '').replace(/\s+/g, ' ');
+      });
+    });
 
   };
   form();
