@@ -333,21 +333,21 @@ window.addEventListener('DOMContentLoaded', () => {
 
     formName.forEach(elem => {
       elem.addEventListener('blur', () => {
-        elem.value = elem.value.replace(/[^а-яА-яёЁ\s]/g, '').replace(/\s+/g, ' ').replace(/^\D/g, match =>
-          match.toUpperCase()).replace(/\D+$/g, match => match.toLowerCase());
+        elem.value = elem.value.replace(/[^а-яА-яёЁ\s]/g, '').replace(/\s+/g, ' ').replace(/[А-Я]/g, match =>
+          match.toLowerCase()).replace(/^[а-я]/g, match => match.toUpperCase());
       });
     });
-    //+
+
     formEmail.forEach(elem => {
       elem.addEventListener('blur', () => {
         elem.value = elem.value.replace(/[^@-_.!~*'A-Za-z]/g, '').replace(/\s+/g, '');
       });
     });
-    //+
+
     formPhone.forEach(elem => {
       elem.addEventListener('blur', () => {
-        elem.value = elem.value.replace(/[^0-9-+()]/g, '').replace(/\s+/g, '').replace(/(\d{1})?(\d{3})(\d{3})(\d{4})/,
-          "$1($2)$3-$4");
+        // eslint-disable-next-line no-useless-escape
+        elem.value = elem.value.replace(/[^0-9-+()]/g, '').replace(/\s+/g, '').replace(/\-+/g, '-');
       });
     });
 
