@@ -376,18 +376,36 @@ window.addEventListener('DOMContentLoaded', () => {
 
   //form
   const form = () => {
-    //const formName = document.querySelectorAll('.form-name');
-    //const formName2 = document.getElementById('form2-name');
-    //const formEmail = document.querySelectorAll('.form-email');
+    const formName = document.querySelectorAll(['.form-name', '#form2-name']);
+    const formEmail = document.querySelectorAll('.form-email');
     const formPhone = document.querySelectorAll('.form-phone');
-    //const mess = document.querySelectorAll('.mess');
+    const mess = document.querySelectorAll('.mess');
 
-    formPhone.forEach(elem => {
+    formName.forEach(elem => {
       elem.addEventListener('blur', () => {
-        elem.value = elem.value.replace(/\D/g, '');
+        elem.value = elem.value.replace(/[^а-яА-яёЁ\s]/g, '').replace(/\s+/g, ' ').replace(/[А-Я]/g, match =>
+          match.toLowerCase()).replace(/^[а-я]/g, match => match.toUpperCase());
       });
     });
 
+    formEmail.forEach(elem => {
+      elem.addEventListener('blur', () => {
+        elem.value = elem.value.replace(/[^@-_.!~*'A-Za-z]/g, '').replace(/\s+/g, '');
+      });
+    });
+
+    formPhone.forEach(elem => {
+      elem.addEventListener('blur', () => {
+        // eslint-disable-next-line no-useless-escape
+        elem.value = elem.value.replace(/[^0-9-+()]/g, '').replace(/\s+/g, '').replace(/\-+/g, '-');
+      });
+    });
+
+    mess.forEach(elem => {
+      elem.addEventListener('blur', () => {
+        elem.value = elem.value.replace(/[^а-яА-яёЁ\s]/g, '').replace(/\s+/g, ' ');
+      });
+    });
 
   };
   form();
