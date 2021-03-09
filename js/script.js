@@ -305,34 +305,26 @@ window.addEventListener('DOMContentLoaded', () => {
   calc();
 
 
-  // command !
+  // command
   const ourCommand = () => {
-    const commandPhoto = document.querySelectorAll('.command__photo');
-
-    commandPhoto.forEach((e, i) => {
-      let target = e.target;
-      if (!commandPhoto[i].matches('data-img')) {
-        commandPhoto[i].addEventListener('mouseover', e => {
-          e.target.src = e.target.dataset.img;
-          console.log(e.target);
-        });
-      } else {
-        commandPhoto[i].addEventListener('mouseout', e => {
-          target = target.src;
-          console.log(e.target);
-        });
+    const command = document.querySelector('.command');
+    let support;
+    command.addEventListener('mouseover', event => {
+      const target = event.target;
+      if (target.matches('img')) {
+        support = target.src;
+        target.src = target.dataset.img;
+        target.dataset.img = support;
       }
-      //console.log(!commandPhoto[i].matches('img.data-img'));
-      /* commandPhoto[i].addEventListener('mouseover', event => {
-        event.target.src
-        console.log(event.target);
-      }); */
-
-    /*   commandPhoto[i].addEventListener('mouseout', event => {
-        console.log(event.target);
-      }); */
     });
-
+    command.addEventListener('mouseout', event => {
+      const target = event.target;
+      if (target.matches('img')) {
+        support = target.src;
+        target.src = target.dataset.img;
+        target.dataset.img = support;
+      }
+    });
   };
   ourCommand();
 
