@@ -357,21 +357,24 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // command !
   const ourCommand = () => {
-    //const command = document.querySelector('.command');
-    const commandPhoto = document.querySelectorAll('.command__photo');
-
-
-    commandPhoto.forEach((e, i) => {
-
-      commandPhoto[i].addEventListener('mouseover', event => {
-        event.target.src = event.target.dataset.img;
-      });
-
-    /*   commandPhoto[i].addEventListener('mouseout', event => {
-        console.log(event.target);
-      }); */
+    const command = document.querySelector('.command');
+    let support;
+    command.addEventListener('mouseover', event => {
+      const target = event.target;
+      if (target.matches('img')) {
+        support = target.src;
+        target.src = target.dataset.img;
+        target.dataset.img = support;
+      }
     });
-
+    command.addEventListener('mouseout', event => {
+      const target = event.target;
+      if (target.matches('img')) {
+        support = target.src;
+        target.src = target.dataset.img;
+        target.dataset.img = support;
+      }
+    });
   };
   ourCommand();
 
@@ -397,9 +400,14 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     formPhone.forEach(elem => {
+      //let phone = '89000000000';
       elem.addEventListener('blur', () => {
-      // eslint-disable-next-line no-useless-escape
-        elem.value = elem.value.replace(/[^0-9+]/g, '').replace(/\s+/g, '');
+        let regex = /(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?/; 
+        if (!regex.test(elem)) {
+          // = elem.value.replace(/[^0-9+]/g, '').replace(/\s+/g, '').replace(/\-+/g, '-');
+        } else {
+          console.log('1');
+        }
       });
     });
 
