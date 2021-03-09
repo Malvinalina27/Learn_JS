@@ -307,14 +307,26 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // command !
   const ourCommand = () => {
-    //const command = document.querySelector('.command');
     const commandPhoto = document.querySelectorAll('.command__photo');
 
     commandPhoto.forEach((e, i) => {
-
-      commandPhoto[i].addEventListener('mouseover', event => {
-        event.target.src = event.target.dataset.img;
-      });
+      let target = e.target;
+      if (!commandPhoto[i].matches('data-img')) {
+        commandPhoto[i].addEventListener('mouseover', e => {
+          e.target.src = e.target.dataset.img;
+          console.log(e.target);
+        });
+      } else {
+        commandPhoto[i].addEventListener('mouseout', e => {
+          target = target.src;
+          console.log(e.target);
+        });
+      }
+      //console.log(!commandPhoto[i].matches('img.data-img'));
+      /* commandPhoto[i].addEventListener('mouseover', event => {
+        event.target.src
+        console.log(event.target);
+      }); */
 
     /*   commandPhoto[i].addEventListener('mouseout', event => {
         console.log(event.target);
