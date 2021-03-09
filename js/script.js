@@ -360,6 +360,7 @@ window.addEventListener('DOMContentLoaded', () => {
     //const command = document.querySelector('.command');
     const commandPhoto = document.querySelectorAll('.command__photo');
 
+
     commandPhoto.forEach((e, i) => {
 
       commandPhoto[i].addEventListener('mouseover', event => {
@@ -383,7 +384,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
     formName.forEach(elem => {
       elem.addEventListener('blur', () => {
-        elem.value = elem.value.replace(/[^а-яА-яёЁ\s]/g, '').replace(/\s+/g, ' ').replace(/[А-Я]/g, match =>
+        // eslint-disable-next-line no-useless-escape
+        elem.value = elem.value.replace(/[^а-яА-яёЁ\s\-]/g, '').replace(/\s+/g, ' ').replace(/[А-Я]/g, match =>
           match.toLowerCase()).replace(/^[а-я]/g, match => match.toUpperCase());
       });
     });
@@ -396,14 +398,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
     formPhone.forEach(elem => {
       elem.addEventListener('blur', () => {
-        // eslint-disable-next-line no-useless-escape
-        elem.value = elem.value.replace(/[^0-9-+()]/g, '').replace(/\s+/g, '').replace(/\-+/g, '-');
+      // eslint-disable-next-line no-useless-escape
+        elem.value = elem.value.replace(/[^0-9+]/g, '').replace(/\s+/g, '');
       });
     });
 
     mess.forEach(elem => {
       elem.addEventListener('blur', () => {
-        elem.value = elem.value.replace(/[^а-яА-яёЁ\s]/g, '').replace(/\s+/g, ' ');
+        elem.value = elem.value.replace(/[^а-яА-яёЁ0-9\s,.!?;:()]/g, '').replace(/\s+/g, ' ');
       });
     });
 
@@ -427,11 +429,15 @@ window.addEventListener('DOMContentLoaded', () => {
         elem.appendChild(statusMessage);
         statusMessage.textContent = loadMessage;
         const formData = new FormData(elem);
-        let body = {};
+        const body = {};
         formData.forEach((val, key) => {
           body[key] = val;
         });
         postData(body, () => {
+          formData.forEach((val, key) => {
+            body[key] = '';
+            console.log(body[key]);
+          });
           statusMessage.textContent = successMessage;
         }, error => {
           statusMessage.textContent = errorMessage;
@@ -460,6 +466,7 @@ window.addEventListener('DOMContentLoaded', () => {
       request.send(JSON.stringify(body));
     };
   };
+
   sendForm();
 
 });
