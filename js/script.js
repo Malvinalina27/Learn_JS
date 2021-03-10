@@ -421,14 +421,19 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     formName.forEach(elem => {
-      elem.addEventListener('input', () => {
-        if (!elem.value) {
-          elem.style.border = '2px solid red';
-        } else {
+      elem.addEventListener('blur', e => {
+        const target = e.target;
+        let val = target.value;
         // eslint-disable-next-line no-useless-escape
-          elem.value = elem.value.replace(/[^а-яА-яёЁ\s\-]/g, '').replace(/\s+/g, ' ').replace(/[А-Я]/g, match =>
-            match.toLowerCase()).replace(/^[а-я]/g, match => match.toUpperCase());
+        val = val.replace(/[^а-яА-ЯёЁ\s\-]/g, '').replace(/\s+/g, ' ');
+        const arr = val.split(' ');
+        for (let i = 0; i < arr.length; i++) {
+          if (arr[i]) {
+            arr[i] = arr[i][0].toUpperCase() + arr[i].substr(1).toLowerCase();
+          }
         }
+        val = arr.join(' ');
+        elem.value = val.replace(/^\s/g, '');
       });
     });
 
