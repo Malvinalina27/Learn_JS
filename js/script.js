@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 window.addEventListener('DOMContentLoaded', () => {
 
 
@@ -304,19 +305,17 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
     calcItem.forEach(elem => {
-      elem.addEventListener('blur', () => {
+      elem.addEventListener('input', () => {
         if (elem === calcSquare) {
-          elem.value = elem.value.replace(/\D[.]/g, '');
+          elem.value = elem.value.replace(/[^0-9.]/g, '');
         } else {
-          elem.value = elem.value.replace(/\D/g, '');
+          elem.value = elem.value.replace(/[^0-9]/g, '');
         }
       });
     });
 
     calcBlock.addEventListener('change', event => {
       const target = event.target;
-      console.log(calcType.options[calcType.selectedIndex].value);
-      console.log(calcDay.value);
 
       // сброс значений
       if (calcType.options[calcType.selectedIndex].matches('.calc-option-title')) {
@@ -399,6 +398,7 @@ window.addEventListener('DOMContentLoaded', () => {
     const formPhone = document.querySelectorAll('.form-phone');
     const mess = document.querySelectorAll('.mess');
 
+
     formEmail.forEach(elem => {
       elem.addEventListener('blur', () => {
         elem.value = elem.value.replace(/[^@-_.!~*'A-Za-z]/g, '').replace(/\s+/g, '');
@@ -407,33 +407,39 @@ window.addEventListener('DOMContentLoaded', () => {
 
     formPhone.forEach(elem => {
       //const regexpPhone = /^(8|\+7)(\d{3})(\d{3})(\d{4})$/;
-      elem.addEventListener('input', (e) => {
-        if (!elem.value /* || !regexpPhone.test(elem.value) */) {
+      elem.addEventListener('input', () => {
+        if (!elem.value) {
           elem.style.border = '2px solid red';
         } else {
           elem.style.border = 'none';
-          const x = e.target.value.replace(/\D/g, '').match(/(8|\+7)(\d{0,3})(\d{0,3})(\d{0,4})/);
-          e.target.value =  x[1] + '(' + x[2] + ')' + x[3] + (x[4] ? '-' + x[4] : '');
+          maskPhone();
           // elem.value = elem.value.replace(regexpPhone, '$1($2)-$3-$4');
-          //elem.value = elem.value.replace(/[^0-9+]/g, '').replace(/\s+/g, '').replace(regexpPhone, '$1($2)-$3-$4');
+          //elem.value = elem.value.replace(/[^0-9+]/g, '').replace(regexpPhone, '$1($2)-$3-$4');
         }
       });
+      // eslint-disable-next-line no-undef
+      maskPhone('.form-phone');
     });
 
     formName.forEach(elem => {
       elem.addEventListener('blur', e => {
-        const target = e.target;
-        let val = target.value;
-        // eslint-disable-next-line no-useless-escape
-        val = val.replace(/[^а-яА-ЯёЁ\s\-]/g, '').replace(/\s+/g, ' ');
-        const arr = val.split(' ');
-        for (let i = 0; i < arr.length; i++) {
-          if (arr[i]) {
-            arr[i] = arr[i][0].toUpperCase() + arr[i].substr(1).toLowerCase();
+        if (!elem.value) {
+          elem.style.border = '2px solid red';
+        } else {
+          elem.style.border = 'none';
+          const target = e.target;
+          let val = target.value;
+          // eslint-disable-next-line no-useless-escape
+          val = val.replace(/[^а-яА-ЯёЁ\s\-]/g, '').replace(/\s+/g, ' ');
+          const arr = val.split(' ');
+          for (let i = 0; i < arr.length; i++) {
+            if (arr[i]) {
+              arr[i] = arr[i][0].toUpperCase() + arr[i].substr(1).toLowerCase();
+            }
           }
+          val = arr.join(' ');
+          elem.value = val.replace(/^\s/g, '');
         }
-        val = arr.join(' ');
-        elem.value = val.replace(/^\s/g, '');
       });
     });
 
@@ -442,6 +448,7 @@ window.addEventListener('DOMContentLoaded', () => {
         if (!elem.value) {
           elem.style.border = '2px solid red';
         } else {
+          elem.style.border = 'none';
           elem.value = elem.value.replace(/[^а-яА-яёЁ0-9\s,.!?;:()]/g, '').replace(/\s+/g, ' ');
         }
       });
@@ -471,11 +478,8 @@ window.addEventListener('DOMContentLoaded', () => {
         formData.forEach((val, key) => {
           body[key] = val;
         });
+        // eslint-disable-next-line no-use-before-define
         postData(body, () => {
-          formData.forEach((key) => {
-            body[key] = '';
-            console.log(body[key]);
-          });
           statusMessage.textContent = successMessage;
         }, error => {
           statusMessage.textContent = errorMessage;
@@ -483,7 +487,6 @@ window.addEventListener('DOMContentLoaded', () => {
         });
       });
     });
-
 
     const postData = (body, outputData, errorData) => {
       const request = new XMLHttpRequest();
