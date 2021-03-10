@@ -385,14 +385,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const formPhone = document.querySelectorAll('.form-phone');
     const mess = document.querySelectorAll('.mess');
 
-    formName.forEach(elem => {
-      elem.addEventListener('blur', () => {
-        // eslint-disable-next-line no-useless-escape
-        elem.value = elem.value.replace(/[^а-яА-яёЁ\s\-]/g, '').replace(/\s+/g, ' ').replace(/[А-Я]/g, match =>
-          match.toLowerCase()).replace(/^[а-я]/g, match => match.toUpperCase());
-      });
-    });
-
     formEmail.forEach(elem => {
       elem.addEventListener('blur', () => {
         elem.value = elem.value.replace(/[^@-_.!~*'A-Za-z]/g, '').replace(/\s+/g, '');
@@ -400,20 +392,39 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     formPhone.forEach(elem => {
-      //let phone = '89000000000';
-      elem.addEventListener('blur', () => {
-        let regex = /(\s*)?(\+)?([- _():=+]?\d[- _():=+]?){10,14}(\s*)?/; 
-        if (!regex.test(elem)) {
-          // = elem.value.replace(/[^0-9+]/g, '').replace(/\s+/g, '').replace(/\-+/g, '-');
+      //const regexpPhone = /^(8|\+7)(\d{3})(\d{3})(\d{4})$/;
+      elem.addEventListener('input', (e) => {
+        if (!elem.value /* || !regexpPhone.test(elem.value) */) {
+          elem.style.border = '2px solid red';
         } else {
-          console.log('1');
+          elem.style.border = 'none';
+          const x = e.target.value.replace(/\D/g, '').match(/(8|\+7)(\d{0,3})(\d{0,3})(\d{0,4})/);
+          e.target.value =  x[1] + '(' + x[2] + ')' + x[3] + (x[4] ? '-' + x[4] : '');
+          // elem.value = elem.value.replace(regexpPhone, '$1($2)-$3-$4');
+          //elem.value = elem.value.replace(/[^0-9+]/g, '').replace(/\s+/g, '').replace(regexpPhone, '$1($2)-$3-$4');
+        }
+      });
+    });
+
+    formName.forEach(elem => {
+      elem.addEventListener('input', () => {
+        if (!elem.value) {
+          elem.style.border = '2px solid red';
+        } else {
+        // eslint-disable-next-line no-useless-escape
+          elem.value = elem.value.replace(/[^а-яА-яёЁ\s\-]/g, '').replace(/\s+/g, ' ').replace(/[А-Я]/g, match =>
+            match.toLowerCase()).replace(/^[а-я]/g, match => match.toUpperCase());
         }
       });
     });
 
     mess.forEach(elem => {
-      elem.addEventListener('blur', () => {
-        elem.value = elem.value.replace(/[^а-яА-яёЁ0-9\s,.!?;:()]/g, '').replace(/\s+/g, ' ');
+      elem.addEventListener('input', () => {
+        if (!elem.value) {
+          elem.style.border = '2px solid red';
+        } else {
+          elem.value = elem.value.replace(/[^а-яА-яёЁ0-9\s,.!?;:()]/g, '').replace(/\s+/g, ' ');
+        }
       });
     });
 
@@ -442,7 +453,7 @@ window.addEventListener('DOMContentLoaded', () => {
           body[key] = val;
         });
         postData(body, () => {
-          formData.forEach((val, key) => {
+          formData.forEach((key) => {
             body[key] = '';
             console.log(body[key]);
           });
