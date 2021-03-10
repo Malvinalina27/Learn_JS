@@ -291,7 +291,7 @@ window.addEventListener('DOMContentLoaded', () => {
   };
   slider();
 
-  //calc +
+  //calc
   const calc = (price = 100) => {
     const calcItem = document.querySelectorAll(['.calc-square', '.calc-count', '.calc-day']);
 
@@ -305,13 +305,25 @@ window.addEventListener('DOMContentLoaded', () => {
 
     calcItem.forEach(elem => {
       elem.addEventListener('blur', () => {
-        elem.value = elem.value.replace(/\D/g, '');
+        if (elem === calcSquare) {
+          elem.value = elem.value.replace(/\D[.]/g, '');
+        } else {
+          elem.value = elem.value.replace(/\D/g, '');
+        }
       });
     });
 
-
     calcBlock.addEventListener('change', event => {
       const target = event.target;
+      console.log(calcType.options[calcType.selectedIndex].value);
+      console.log(calcDay.value);
+
+      // сброс значений
+      if (calcType.options[calcType.selectedIndex].matches('.calc-option-title')) {
+        calcDay.value = '';
+        calcCount.value = '';
+        calcSquare.value = '';
+      }
 
       const countSum = () => {
         let total = 0;
@@ -319,6 +331,7 @@ window.addEventListener('DOMContentLoaded', () => {
         let dayValue = 1;
         const typeValue = calcType.options[calcType.selectedIndex].value;
         const squareValue = +calcSquare.value;
+
 
         if (calcCount.value > 1) {
           countValue += (calcCount.value - 1) / 10;
@@ -331,7 +344,7 @@ window.addEventListener('DOMContentLoaded', () => {
         }
 
         if (typeValue && squareValue) {
-          total = price * typeValue * squareValue * countValue * dayValue;
+          total = Math.ceil(price * typeValue * squareValue * countValue * dayValue);
         }
 
         totalValue.textContent = total;
@@ -351,6 +364,7 @@ window.addEventListener('DOMContentLoaded', () => {
         countSum();
       }
     });
+
   };
   calc(100);
 
