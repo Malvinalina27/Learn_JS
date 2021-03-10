@@ -406,23 +406,13 @@ window.addEventListener('DOMContentLoaded', () => {
     });
 
     formPhone.forEach(elem => {
-      //const regexpPhone = /^(8|\+7)(\d{3})(\d{3})(\d{4})$/;
       elem.addEventListener('input', () => {
-        if (!elem.value) {
-          elem.style.border = '2px solid red';
-        } else {
-          elem.style.border = 'none';
-          maskPhone();
-          // elem.value = elem.value.replace(regexpPhone, '$1($2)-$3-$4');
-          //elem.value = elem.value.replace(/[^0-9+]/g, '').replace(regexpPhone, '$1($2)-$3-$4');
-        }
+        maskPhone('.form-phone');
       });
-      // eslint-disable-next-line no-undef
-      maskPhone('.form-phone');
     });
 
     formName.forEach(elem => {
-      elem.addEventListener('blur', e => {
+      elem.addEventListener('input', e => {
         if (!elem.value) {
           elem.style.border = '2px solid red';
         } else {
@@ -481,9 +471,17 @@ window.addEventListener('DOMContentLoaded', () => {
         // eslint-disable-next-line no-use-before-define
         postData(body, () => {
           statusMessage.textContent = successMessage;
+          const input = elem.querySelectorAll('input');
+          input.forEach((item) => {
+            item.value = '';
+          });
         }, error => {
           statusMessage.textContent = errorMessage;
           console.error(error);
+          const input = elem.querySelectorAll('input');
+          input.forEach((item) => {
+            item.value = '';
+          });
         });
       });
     });
