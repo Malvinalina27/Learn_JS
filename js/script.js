@@ -37,47 +37,34 @@ window.addEventListener('DOMContentLoaded', () => {
     }
 
     updateClock();
-
     setInterval(updateClock, 1000);
-
-
   }
   countTimer('28 March 2021 15:00');
 
   // Menu
   const toggleMenu = () => {
-
     const btnMenu = document.querySelector('.menu'); // кнопка .menu
     const menu = document.querySelector('menu'); // само меню
 
     const handlerMenu = () => {
       menu.classList.toggle('active-menu');
     };
-
-    // btnMenu
+    // кнопка вызова меню
     btnMenu.addEventListener('click', event => {
       let target = event.target;
       target = target.closest('.menu');
-
       if (target) {
         handlerMenu();
       }
     });
-
-    // closeBtn & menuItems
+    // active-menu
     menu.addEventListener('click', event => {
-      let target = event.target;
-
-      if (target.classList.contains('close-btn')) {
+      const target = event.target;
+      console.log(target);
+      if (target.classList.contains('close-btn') || target.closest('li>a')) {
         handlerMenu();
-      } else {
-        target = target.closest('li>a');
-        if (target) {
-          handlerMenu();
-        }
       }
     });
-
   };
   toggleMenu();
 
@@ -348,17 +335,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
         totalValue.textContent = total;
       };
-
-      /* if (target.matches('.calc-type') || target.matches('.calc-square') ||
-      target.matches('.calc-count') || target.matches('.calc-day')) {
-        console.log('1');
-      } или */
-
-      /* if (target === calcType || target === calcSquare ||
-        target === calcCount || target === calcDay) {
-        console.log('1');
-      } или */
-
       if (target.matches('select') || target.matches('input')) {
         countSum();
       }
@@ -366,7 +342,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
   };
   calc(100);
-
 
   // command !
   const ourCommand = () => {
@@ -400,13 +375,24 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
     formEmail.forEach(elem => {
-      elem.addEventListener('blur', () => {
-        elem.value = elem.value.replace(/[^@-_.!~*'A-Za-z]/g, '').replace(/\s+/g, '');
+      elem.addEventListener('input', () => {
+        //elem.value = elem.value.replace(/[^@-_.!~*'A-Za-z]/g, '');
+        // eslint-disable-next-line no-useless-escape
+        const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
+        if (reg.test(elem.value) === false) {
+          elem.style.border = '2px solid red';
+          elem.style.title = 'Введите корректные данные name@name.name';
+          return false;
+        } else {
+          elem.style.border = 'none';
+          return true;
+        }
       });
     });
 
     formPhone.forEach(elem => {
       elem.addEventListener('input', () => {
+        // eslint-disable-next-line no-undef
         maskPhone('.form-phone');
       });
     });
@@ -456,56 +442,63 @@ window.addEventListener('DOMContentLoaded', () => {
     const form = document.querySelectorAll(['#form1', '#form2', '#form3']);
 
     const statusMessage = document.createElement('div');
-    statusMessage.style.cssText = 'font-size: 2 rem;';
+    statusMessage.style.cssText = 'font-size: 2 rem; color: #fff;';
 
-    form.forEach(elem => {
-      elem.addEventListener('submit', event => {
-        event.preventDefault();
-        elem.appendChild(statusMessage);
-        statusMessage.textContent = loadMessage;
-        const formData = new FormData(elem);
-        const body = {};
-        formData.forEach((val, key) => {
-          body[key] = val;
-        });
-        // eslint-disable-next-line no-use-before-define
-        postData(body, () => {
-          statusMessage.textContent = successMessage;
-          const input = elem.querySelectorAll('input');
-          input.forEach((item) => {
-            item.value = '';
-          });
-        }, error => {
-          statusMessage.textContent = errorMessage;
-          console.error(error);
-          const input = elem.querySelectorAll('input');
-          input.forEach((item) => {
-            item.value = '';
-          });
-        });
-      });
-    });
-
-    const postData = (body, outputData, errorData) => {
+    // ajax
+    const postData = body => new Promise((resolve, reject) => {
       const request = new XMLHttpRequest();
       request.addEventListener('readystatechange', () => {
         if (request.readyState !== 4) {
           return;
         }
-
         if (request.status === 200) {
-          outputData();
+          resolve();
         } else {
-          errorData(request.status);
+          reject(request.status);
         }
       });
       request.open('POST', './server.php');
       request.setRequestHeader('Content-Type', 'application/json');
-
       request.send(JSON.stringify(body));
-    };
+    });
+
+    //заполнение формы
+    form.forEach(elem => {
+      elem.addEventListener('submit', event => {
+        event.preventDefault();
+        elem.appendChild(statusMessage);
+        statusMessage.textContent = loadMessage;
+
+        const formData = new FormData(elem);
+        const body = {};
+        formData.forEach((val, key) => {
+          body[key] = val;
+        });
+        postData(body)
+          .then(() => {
+            statusMessage.textContent = successMessage;
+            const input = elem.querySelectorAll('input');
+            input.forEach(item => {
+              item.value = '';
+            });
+            setTimeout(() => {
+              statusMessage.style = 'display: none';
+            }, 3000);
+          })
+          .catch(error => {
+            statusMessage.textContent = errorMessage;
+            console.error(error);
+            const input = elem.querySelectorAll('input');
+            input.forEach(item => {
+              item.value = '';
+            });
+            setTimeout(() => {
+              statusMessage.style = 'display: none';
+            }, 3000);
+          });
+      });
+    });
   };
 
   sendForm();
-
 });
