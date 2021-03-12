@@ -359,16 +359,16 @@ window.addEventListener('DOMContentLoaded', () => {
 
       const target = event.target;
       const regularValid = () => {
-        target.value = target.value.replace(/ +/g, " ");
-        target.value = target.value.replace(/-+/g, "-");
-        target.value = target.value.replace(/^-|-$/g, "");
+        target.value = target.value.replace(/ +/g, ' ');
+        target.value = target.value.replace(/-+/g, '-');
+        target.value = target.value.replace(/^-|-$/g, '');
         target.value = target.value.trim();
       };
 
       if (target.matches("#form2-message")) {
         // eslint-disable-next-line no-useless-escape
-        target.value = target.value.replace(/[^а-яё\-\ ,.][^0-9\!?]/gi, "");
-        target.addEventListener("blur", () => {
+        target.value = target.value.replace(/[^а-яё\-\ ,.][^0-9\!?]/gi, '');
+        target.addEventListener('blur', () => {
           regularValid();
         },
         true
@@ -378,13 +378,13 @@ window.addEventListener('DOMContentLoaded', () => {
       name.forEach(item => {
         if (target === item) {
           // eslint-disable-next-line no-useless-escape
-          target.value = target.value.replace(/[^а-яё\ ]/gi, "");
-          item.addEventListener("blur", () => {
+          target.value = target.value.replace(/[^а-яё\ ]/gi, '');
+          item.addEventListener('blur', () => {
             regularValid();
             target.value = target.value
-              .split(" ")
+              .split(' ')
               .map(word => word[0].toUpperCase() + word.substring(1))
-              .join(" ");
+              .join(' ');
           },
           true
           );
@@ -393,8 +393,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
       email.forEach(item => {
         if (target === item) {
-          target.value = target.value.replace(/[^a-z@\-_.!~*']/gi, "");
-          item.addEventListener("blur", () => {
+          target.value = target.value.replace(/[^a-z@\-_.!~*']/gi, '');
+          item.addEventListener('blur', () => {
             regularValid();
           },
           true
@@ -404,7 +404,8 @@ window.addEventListener('DOMContentLoaded', () => {
 
       phone.forEach(item => {
         if (target === item) {
-          maskPhone('.form-phone'), true;
+          maskPhone('.form-phone'),
+          true;
         }
       });
     });
@@ -460,13 +461,13 @@ window.addEventListener('DOMContentLoaded', () => {
     statusMessage.style.cssText = 'font-size: 2 rem; color: #fff;';
 
     // ajax
-    const postData = formData =>
+    const postData = body =>
       fetch('./server.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(body),
       });
 
     //заполнение формы
@@ -483,7 +484,7 @@ window.addEventListener('DOMContentLoaded', () => {
         formData.forEach((val, key) => {
           body[key] = val;
         });
-        postData(formData)
+        postData(body)
           .then(response => {
             if (response.status !== 200) {
               throw new Error('status network not 200');
