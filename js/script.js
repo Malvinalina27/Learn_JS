@@ -445,22 +445,14 @@ window.addEventListener('DOMContentLoaded', () => {
     statusMessage.style.cssText = 'font-size: 2 rem; color: #fff;';
 
     // ajax
-    const postData = body => new Promise((resolve, reject) => {
-      const request = new XMLHttpRequest();
-      request.addEventListener('readystatechange', () => {
-        if (request.readyState !== 4) {
-          return;
-        }
-        if (request.status === 200) {
-          resolve();
-        } else {
-          reject(request.status);
-        }
+    const postData = body =>
+      fetch('./server.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(body),
       });
-      request.open('POST', './server.php');
-      request.setRequestHeader('Content-Type', 'application/json');
-      request.send(JSON.stringify(body));
-    });
 
     //заполнение формы
     form.forEach(elem => {
@@ -475,7 +467,10 @@ window.addEventListener('DOMContentLoaded', () => {
           body[key] = val;
         });
         postData(body)
-          .then(() => {
+          .then(response => {
+            if (response.status !== 200) {
+              throw new Error('status network not 200');
+            }
             statusMessage.textContent = successMessage;
             const input = elem.querySelectorAll('input');
             input.forEach(item => {
