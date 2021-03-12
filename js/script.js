@@ -445,13 +445,13 @@ window.addEventListener('DOMContentLoaded', () => {
     statusMessage.style.cssText = 'font-size: 2 rem; color: #fff;';
 
     // ajax
-    const postData = body =>
+    const postData = formData =>
       fetch('./server.php', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(body),
+        body: JSON.stringify(formData),
       });
 
     //заполнение формы
@@ -462,17 +462,19 @@ window.addEventListener('DOMContentLoaded', () => {
         statusMessage.textContent = loadMessage;
 
         const formData = new FormData(elem);
-        const body = {};
+        const input = elem.querySelectorAll('input');
+
+        /* const body = {};
         formData.forEach((val, key) => {
           body[key] = val;
-        });
-        postData(body)
+        }); */
+        postData(formData)
           .then(response => {
             if (response.status !== 200) {
               throw new Error('status network not 200');
             }
+            console.log(response);
             statusMessage.textContent = successMessage;
-            const input = elem.querySelectorAll('input');
             input.forEach(item => {
               item.value = '';
             });
@@ -483,7 +485,6 @@ window.addEventListener('DOMContentLoaded', () => {
           .catch(error => {
             statusMessage.textContent = errorMessage;
             console.error(error);
-            const input = elem.querySelectorAll('input');
             input.forEach(item => {
               item.value = '';
             });
