@@ -457,6 +457,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
     const form = document.querySelectorAll(['#form1', '#form2', '#form3']);
 
+
     const statusMessage = document.createElement('div');
     statusMessage.style.cssText = 'font-size: 2 rem; color: #fff;';
 
@@ -489,14 +490,15 @@ window.addEventListener('DOMContentLoaded', () => {
             if (response.status !== 200) {
               throw new Error('status network not 200');
             }
-            console.log(response);
             statusMessage.textContent = successMessage;
             input.forEach(item => {
               item.value = '';
             });
             setTimeout(() => {
               statusMessage.style = 'display: none';
+              document.querySelector('.popup').style = 'display:none;';
             }, 3000);
+
           })
           .catch(error => {
             statusMessage.textContent = errorMessage;
