@@ -43,12 +43,12 @@ window.addEventListener('DOMContentLoaded', () => {
 
   // Menu
   const toggleMenu = () => {
-    const btnMenu = document.querySelector('.menu'); // кнопка .menu
     const menu = document.querySelector('menu'); // само меню
 
     const handlerMenu = () => {
       menu.classList.toggle('active-menu');
     };
+
     document.body.addEventListener('click', e => {
       const target = e.target;
       if (target.classList.contains('close-btn') || target.closest('li>a') || target.closest('.menu')) {
@@ -158,7 +158,6 @@ window.addEventListener('DOMContentLoaded', () => {
     const slider = document.querySelector('.portfolio-content');
     const slide = document.querySelectorAll('.portfolio-item');
     const portfolioDots = document.querySelector('.portfolio-dots');
-    //const btn = document.querySelectorAll('.portfolio-btn');
 
     // создание dots в portfolioDots
     const getListContent = () => {
@@ -303,7 +302,6 @@ window.addEventListener('DOMContentLoaded', () => {
         const typeValue = calcType.options[calcType.selectedIndex].value;
         const squareValue = +calcSquare.value;
 
-
         if (calcCount.value > 1) {
           countValue += (calcCount.value - 1) / 10;
         }
@@ -328,7 +326,7 @@ window.addEventListener('DOMContentLoaded', () => {
   };
   calc(100);
 
-  // command !
+  // command
   const ourCommand = () => {
     const command = document.querySelector('.command');
     let support;
@@ -353,67 +351,99 @@ window.addEventListener('DOMContentLoaded', () => {
 
   //form
   const form = () => {
-    const formName = document.querySelectorAll(['.form-name', '#form2-name']);
-    const formEmail = document.querySelectorAll('.form-email');
-    const formPhone = document.querySelectorAll('.form-phone');
-    const mess = document.querySelectorAll('.mess');
+    document.addEventListener("input", event => {
+      event.preventDefault();
+      const name = document.querySelectorAll('[name="user_name"]');
+      const email = document.querySelectorAll('[name="user_email"]');
+      const phone = document.querySelectorAll('[name="user_phone"]');
 
+      const target = event.target;
+      const regularValid = () => {
+        target.value = target.value.replace(/ +/g, " ");
+        target.value = target.value.replace(/-+/g, "-");
+        target.value = target.value.replace(/^-|-$/g, "");
+        target.value = target.value.trim();
+      };
 
-    formEmail.forEach(elem => {
-      elem.addEventListener('input', () => {
-        //elem.value = elem.value.replace(/[^@-_.!~*'A-Za-z]/g, '');
+      if (target.matches("#form2-message")) {
         // eslint-disable-next-line no-useless-escape
-        const reg = /^([A-Za-z0-9_\-\.])+\@([A-Za-z0-9_\-\.])+\.([A-Za-z]{2,4})$/;
-        if (reg.test(elem.value) === false) {
-          elem.style.border = '2px solid red';
-          elem.style.title = 'Введите корректные данные name@name.name';
-          return false;
-        } else {
-          elem.style.border = 'none';
-          return true;
-        }
-      });
-    });
+        target.value = target.value.replace(/[^а-яё\-\ ,.][^0-9\!?]/gi, "");
+        target.addEventListener("blur", () => {
+          regularValid();
+        },
+        true
+        );
+      }
 
-    formPhone.forEach(elem => {
-      elem.addEventListener('input', () => {
-        // eslint-disable-next-line no-undef
-        maskPhone('.form-phone');
-      });
-    });
-
-    formName.forEach(elem => {
-      elem.addEventListener('input', e => {
-        if (!elem.value) {
-          elem.style.border = '2px solid red';
-        } else {
-          elem.style.border = 'none';
-          const target = e.target;
-          let val = target.value;
+      name.forEach(item => {
+        if (target === item) {
           // eslint-disable-next-line no-useless-escape
-          val = val.replace(/[^а-яА-ЯёЁ\s\-]/g, '').replace(/\s+/g, ' ');
-          const arr = val.split(' ');
-          for (let i = 0; i < arr.length; i++) {
-            if (arr[i]) {
-              arr[i] = arr[i][0].toUpperCase() + arr[i].substr(1).toLowerCase();
-            }
-          }
-          val = arr.join(' ');
-          elem.value = val.replace(/^\s/g, '');
+          target.value = target.value.replace(/[^а-яё\ ]/gi, "");
+          item.addEventListener("blur", () => {
+            regularValid();
+            target.value = target.value
+              .split(" ")
+              .map(word => word[0].toUpperCase() + word.substring(1))
+              .join(" ");
+          },
+          true
+          );
+        }
+      });
+
+      email.forEach(item => {
+        if (target === item) {
+          target.value = target.value.replace(/[^a-z@\-_.!~*']/gi, "");
+          item.addEventListener("blur", () => {
+            regularValid();
+          },
+          true
+          );
+        }
+      });
+
+      phone.forEach(item => {
+        if (target === item) {
+          maskPhone('.form-phone'), true;
         }
       });
     });
 
-    mess.forEach(elem => {
-      elem.addEventListener('input', () => {
-        if (!elem.value) {
-          elem.style.border = '2px solid red';
-        } else {
-          elem.style.border = 'none';
-          elem.value = elem.value.replace(/[^а-яА-яёЁ0-9\s,.!?;:()]/g, '').replace(/\s+/g, ' ');
+    // маска для телефона
+    function maskPhone(selector, masked = '+7 (___) ___-__-__') {
+      const elems = document.querySelectorAll(selector);
+
+      function mask(event) {
+        const keyCode = event.keyCode;
+        const template = masked,
+          def = template.replace(/\D/g, ""),
+          val = this.value.replace(/\D/g, "");
+        let i = 0,
+          newValue = template.replace(/[_\d]/g, a => (i < val.length ? val.charAt(i++) || def.charAt(i) : a));
+        i = newValue.indexOf("_");
+        if (i !== -1) {
+          newValue = newValue.slice(0, i);
         }
-      });
-    });
+        let reg = template.substr(0, this.value.length).replace(/_+/g,
+          a => "\\d{1," + a.length + "}").replace(/[+()]/g, "\\$&");
+        reg = new RegExp("^" + reg + "$");
+        //
+        if (!reg.test(this.value) || this.value.length < 18 || keyCode > 47 && keyCode < 58) {
+          this.value = newValue;
+        }
+        if (event.type === "blur" && this.value.length < 5) {
+          this.value = "";
+        }
+
+      }
+
+      for (const elem of elems) {
+        elem.addEventListener("input", mask);
+        elem.addEventListener("focus", mask);
+        elem.addEventListener("blur", mask);
+      }
+
+    }
 
   };
   form();
