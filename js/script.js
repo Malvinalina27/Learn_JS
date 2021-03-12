@@ -49,20 +49,12 @@ window.addEventListener('DOMContentLoaded', () => {
     const handlerMenu = () => {
       menu.classList.toggle('active-menu');
     };
-    // кнопка вызова меню
-    btnMenu.addEventListener('click', event => {
-      let target = event.target;
-      target = target.closest('.menu');
-      if (target) {
+    document.body.addEventListener('click', e => {
+      const target = e.target;
+      if (target.classList.contains('close-btn') || target.closest('li>a') || target.closest('.menu')) {
         handlerMenu();
-      }
-    });
-    // active-menu
-    menu.addEventListener('click', event => {
-      const target = event.target;
-      console.log(target);
-      if (target.classList.contains('close-btn') || target.closest('li>a')) {
-        handlerMenu();
+      } else if (target.tagName !== 'MENU') {
+        menu.classList.remove('active-menu');
       }
     });
   };
@@ -78,16 +70,11 @@ window.addEventListener('DOMContentLoaded', () => {
     //animation popupContent
     function animate({ duration, timing, draw }) {
       const start = performance.now();
-
       requestAnimationFrame(function animate(time) {
         let timeFraction = (time - start) / duration;
-
         if (timeFraction > 1) timeFraction = 1;
-
         const progress = timing(timeFraction);
-
         draw(progress);
-
         if (timeFraction < 1) {
           requestAnimationFrame(animate);
         }
@@ -117,7 +104,6 @@ window.addEventListener('DOMContentLoaded', () => {
     //popup
     popup.addEventListener('click', event => {
       let target = event.target;
-
       if (target.classList.contains('popup-close')) {
         popup.style.display = 'none';
       } else {
@@ -126,7 +112,6 @@ window.addEventListener('DOMContentLoaded', () => {
           popup.style.display = 'none';
         }
       }
-
     });
 
   };
@@ -461,13 +446,13 @@ window.addEventListener('DOMContentLoaded', () => {
         elem.appendChild(statusMessage);
         statusMessage.textContent = loadMessage;
 
-        const formData = new FormData(elem);
         const input = elem.querySelectorAll('input');
 
-        /* const body = {};
+        const formData = new FormData(elem);
+        const body = {};
         formData.forEach((val, key) => {
           body[key] = val;
-        }); */
+        });
         postData(formData)
           .then(response => {
             if (response.status !== 200) {
