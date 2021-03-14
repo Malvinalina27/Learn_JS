@@ -51,12 +51,14 @@ window.addEventListener('DOMContentLoaded', () => {
 
     document.body.addEventListener('click', e => {
       const target = e.target;
+      console.log(target);
       if (target.classList.contains('close-btn') || target.closest('li>a') || target.closest('.menu')) {
         handlerMenu();
-      } else if (target.tagName !== 'MENU') {
+      } /* else if (target.tagName !== 'MENU') {
         menu.classList.remove('active-menu');
-      }
+      } */
     });
+
   };
   toggleMenu();
 
@@ -367,7 +369,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
       if (target.matches("#form2-message")) {
         // eslint-disable-next-line no-useless-escape
-        target.value = target.value.replace(/[^а-яё\-\ ,.][^0-9\!?]/gi, '');
+        target.value = target.value.replace(/[^а-яё\-\ ,.!?][^0-9]/gi, '');
         target.addEventListener('blur', () => {
           regularValid();
         },
@@ -432,7 +434,7 @@ window.addEventListener('DOMContentLoaded', () => {
         if (!reg.test(this.value) || this.value.length < 18 || keyCode > 47 && keyCode < 58) {
           this.value = newValue;
         }
-        if (event.type === "blur" && this.value.length < 5) {
+        if (event.type === "blur" && this.value.length < 13) {
           this.value = "";
         }
 
@@ -459,6 +461,7 @@ window.addEventListener('DOMContentLoaded', () => {
 
 
     const statusMessage = document.createElement('div');
+    statusMessage.classList.add('visible');
     statusMessage.style.cssText = 'font-size: 2 rem; color: #fff;';
 
     // ajax
@@ -491,23 +494,23 @@ window.addEventListener('DOMContentLoaded', () => {
               throw new Error('status network not 200');
             }
             statusMessage.textContent = successMessage;
-            input.forEach(item => {
-              item.value = '';
-            });
             setTimeout(() => {
-              statusMessage.style = 'display: none';
+              input.forEach(item => {
+                item.value = '';
+              });
               document.querySelector('.popup').style = 'display:none;';
+              elem.removeChild(statusMessage);
             }, 3000);
 
           })
           .catch(error => {
             statusMessage.textContent = errorMessage;
             console.error(error);
-            input.forEach(item => {
-              item.value = '';
-            });
             setTimeout(() => {
-              statusMessage.style = 'display: none';
+              input.forEach(item => {
+                item.value = '';
+              });
+              elem.removeChild(statusMessage);
             }, 3000);
           });
       });
